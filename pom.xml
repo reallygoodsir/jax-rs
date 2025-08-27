@@ -12,10 +12,32 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>21</jdk.version>
+        <org.glassfish.jersey>2.35</org.glassfish.jersey>
     </properties>
 
     <dependencies>
+        <!-- Jersey Core -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${org.glassfish.jersey}</version> <!-- pick stable version -->
+        </dependency>
+
+        <!-- Jersey Servlet Container -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${org.glassfish.jersey}</version>
+        </dependency>
+
+        <!-- JSON support (Jackson) -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${org.glassfish.jersey}</version>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
