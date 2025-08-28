@@ -12,31 +12,46 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>21</jdk.version>
-        <org.glassfish.jersey>2.35</org.glassfish.jersey>
+        <jersey.version>2.41</jersey.version>
     </properties>
 
     <dependencies>
-        <!-- Jersey Core -->
+        <!-- JAX-RS API -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jersey Core & Servlet -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>${org.glassfish.jersey}</version> <!-- pick stable version -->
+            <version>${jersey.version}</version>
         </dependency>
-
-        <!-- Jersey Servlet Container -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-            <version>${org.glassfish.jersey}</version>
+            <version>${jersey.version}</version>
         </dependency>
 
-        <!-- JSON support (Jackson) -->
+        <!-- HK2 for injection -->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <!-- JSON -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>${org.glassfish.jersey}</version>
+            <version>${jersey.version}</version>
         </dependency>
     </dependencies>
+
+
 
 
     <build>
