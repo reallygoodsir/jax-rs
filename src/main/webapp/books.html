@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Books CRUD</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    .section {
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    input, textarea, button {
+      margin: 0.2rem 0;
+      padding: 0.4rem;
+    }
+    button {
+      cursor: pointer;
+      background: #007bff;
+      border: none;
+      color: white;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    pre {
+      background: #eee;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<h1>Books CRUD</h1>
+
+<div class="section">
+  <label>Base API URL:</label>
+  <input id="baseUrl" value="http://localhost:8080/users-web-app/api/books" style="width: 400px" />
+</div>
+
+<div class="section">
+  <h2>Get All Books</h2>
+  <button onclick="getAllBooks()">Fetch All</button>
+  <div id="allBooks"></div>
+</div>
+
+<div class="section">
+  <h2>Get Book By ID</h2>
+  <input id="getBookId" placeholder="Book ID" />
+  <button onclick="getBookById()">Fetch</button>
+  <div id="bookById"></div>
+</div>
+
+<div class="section">
+  <h2>Create New Book</h2>
+  <input id="createName" placeholder="Name" /> <br />
+  <textarea id="createDescription" placeholder="Description"></textarea> <br />
+  <button onclick="createBook()">Create</button>
+  <div id="createResult"></div>
+</div>
+
+<div class="section">
+  <h2>Update Book</h2>
+  <input id="updateId" placeholder="Book ID" /> <br />
+  <input id="updateName" placeholder="Name" /> <br />
+  <textarea id="updateDescription" placeholder="Description"></textarea> <br />
+  <button onclick="updateBook()">Update</button>
+  <div id="updateResult"></div>
+</div>
+
+<div class="section">
+  <h2>Delete Book</h2>
+  <input id="deleteBookId" placeholder="Book ID" />
+  <button onclick="deleteBook()">Delete</button>
+  <div id="deleteResult"></div>
+</div>
+
+<script>
+  function baseUrl() {
+    return document.getElementById('baseUrl').value;
+  }
+
+  async function getAllBooks() {
+    try {
+      const res = await fetch(baseUrl());
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      document.getElementById('allBooks').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    } catch (e) {
+      document.getElementById('allBooks').innerHTML = '<div class="error">' + e.message + '</div>';
+    }
+  }
+
+  async function getBookById() {
+    const id = document.getElementById('getBookId').value;
+    try {
+      const res = await fetch(baseUrl() + '/' + id);
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      document.getElementById('bookById').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    } catch (e) {
+      document.getElementById('bookById').innerHTML = '<div class="error">' + e.message + '</div>';
+    }
+  }
+
+  async function createBook() {
+    const name = document.getElementById('createName').value;
+    const description = document.getElementById('createDescription').value;
+    try {
+      const res = await fetch(baseUrl(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, description })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      document.getElementById('createResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    } catch (e) {
+      document.getElementById('createResult').innerHTML = '<div class="error">' + e.message + '</div>';
+    }
+  }
+
+  async function updateBook() {
+    const id = document.getElementById('updateId').value;
+    const name = document.getElementById('updateName').value;
+    const description = document.getElementById('updateDescription').value;
+    try {
+      const res = await fetch(baseUrl(), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, name, description })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      document.getElementById('updateResult').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    } catch (e) {
+      document.getElementById('updateResult').innerHTML = '<div class="error">' + e.message + '</div>';
+    }
+  }
+
+  async function deleteBook() {
+    const id = document.getElementById('deleteBookId').value;
+    try {
+      const res = await fetch(baseUrl() + '/' + id, { method: 'DELETE' });
+      if (!res.ok) throw new Error(await res.text());
+      document.getElementById('deleteResult').innerHTML = 'Book deleted successfully';
+    } catch (e) {
+      document.getElementById('deleteResult').innerHTML = '<div class="error">' + e.message + '</div>';
+    }
+  }
+</script>
+</body>
+</html>
